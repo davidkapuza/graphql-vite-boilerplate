@@ -35,7 +35,7 @@ A modern TypeScript monorepo starter using **pnpm workspaces** for dependency ma
 | Area            | Tech                                   |
 | --------------- | -------------------------------------- |
 | Package Manager | pnpm workspaces                        |
-| Backend         | NestJS 11, RxJS                        |
+| Backend         | NestJS 11, RxJS, GraphQL               |
 | Frontend        | React 19, Vite, Tailwind CSS 4         |
 | UI Library      | Radix UI primitives, shadcn components |
 | Language        | TypeScript 5                           |

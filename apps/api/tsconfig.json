@@ -6,6 +6,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "noEmit": false,
-    "verbatimModuleSyntax": false
+    "verbatimModuleSyntax": false,
+    "strictPropertyInitialization": false
   }
 }
