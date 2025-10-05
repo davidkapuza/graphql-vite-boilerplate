@@ -1,1 +1,1 @@
-export { reactConfig as default } from "../../packages/eslint-config/src";
+export { baseConfig as default } from '@boilerplate/eslint-config';

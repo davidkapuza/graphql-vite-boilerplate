@@ -1,12 +1,18 @@
 {
-  "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "Standalone React component library",
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "../../packages/ui"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    }
+  ],
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
     "jsx": "react-jsx",
-    "types": ["vite/client"],
-    /* Assuming your bundler will output everything.  */
-    "noEmit": true
+    "moduleResolution": "bundler",
+    "types": ["vite/client"]
   }
 }

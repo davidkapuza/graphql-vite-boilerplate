@@ -1,11 +1,11 @@
-import { defineConfig } from "eslint/config";
-import { baseConfig } from "./base";
-import globals from "globals";
+import { defineConfig } from 'eslint/config';
+import { baseConfig } from './base';
+import globals from 'globals';
+import type { Linter } from 'eslint';
 
-export const nodeConfig = defineConfig([
+export const nodeConfig: Linter.Config[] = defineConfig([
   ...baseConfig,
   {
-    files: ["**/*.ts"],
     languageOptions: {
       globals: globals.node,
     },

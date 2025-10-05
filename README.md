@@ -1,147 +1,89 @@
-# Monorepo Boilerplate
+# GraphQL + Vite Monorepo Boilerplate
 
-A modern TypeScript monorepo starter using **pnpm workspaces** for dependency management, featuring a NestJS API, a Vite + React web app, and shared internal packages (UI components, utilities, and ESLint config). Designed to be minimal, fast, and extensible.
+A TypeScript-first workspace that bundles a NestJS GraphQL API, a Vite + React app, and shared packages for UI, utilities, and linting.
 
-## ✨ Features
+<p align="center">
+	<a href="https://pnpm.io/workspaces"><img src="https://img.shields.io/badge/pnpm-workspaces-orange?style=flat-square" alt="pnpm workspaces" /></a>
+	<a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript" alt="TypeScript" /></a>
+	<a href="https://nestjs.com/"><img src="https://img.shields.io/badge/NestJS-GraphQL-red?style=flat-square&logo=nestjs" alt="NestJS" /></a>
+	<a href="https://vite.dev/"><img src="https://img.shields.io/badge/Vite-React%2019-purple?style=flat-square&logo=vite" alt="Vite React" /></a>
+</p>
 
-- Fast installs & isolated builds via **pnpm**
-- **TypeScript** across all packages & apps
-- **NestJS** backend (`apps/api`)
-- **Vite + React 19** frontend (`apps/web`)
-- **Shared UI library** with shadcn components (`packages/ui`)
-- **Shared utilities** package (`packages/utils`)
-- **Centralized ESLint config** (`packages/eslint-config`)
-- **Tailwind CSS v4** + Radix + lucide icons in UI + Web
+## Why this repo
 
-## 🗂 Repository Layout
+- **pnpm workspaces** for fast installs and isolated scripts
+- **TypeScript everywhere** with a single `tsconfig.base.json`
+- **API & Web apps** ready to ship (NestJS + Vite/React 19)
+- **Shared packages** for UI (shadcn + Radix), utilities, and ESLint presets
+- **Tailwind CSS v4** styling in both the UI library and web app
 
-```
-.
-├── apps/
-│   ├── api/            # NestJS backend service
-│   └── web/            # React + Vite frontend
-├── packages/
-│   ├── ui/             # Reusable shadcn UI
-│   ├── utils/          # Internal utility helpers
-│   └── eslint-config/  # Centralized ESLint presets
-├── package.json        # Root scripts & workspace config
-├── pnpm-workspace.yaml # Workspace definition
-├── tsconfig.base.json  # Shared TS config base
-└── README.md
-```
-
-## 🧱 Tech Stack
-
-| Area            | Tech                                   |
-| --------------- | -------------------------------------- |
-| Package Manager | pnpm workspaces                        |
-| Backend         | NestJS 11, RxJS, GraphQL               |
-| Frontend        | React 19, Vite, Tailwind CSS 4         |
-| UI Library      | Radix UI primitives, shadcn components |
-| Language        | TypeScript 5                           |
-| Linting         | ESLint 9 + custom config               |
-| Formatting      | Prettier                               |
-
-## 🚀 Getting Started
-
-### 1. Install Dependencies
+## Quick start
 
 ```bash
 pnpm install
+pnpm dev          # runs API + Web together
+
+# or target a workspace
+pnpm --filter api start:dev
+pnpm --filter web dev
 ```
 
-### 2. Start Development (API + Web concurrently)
+Common maintenance commands:
 
 ```bash
-pnpm dev
+pnpm build        # build every workspace
+pnpm lint         # run eslint via shared config
+pnpm test         # execute package-level tests when present
 ```
 
-- API: http://localhost:3000 (NestJS)
-- Web: http://localhost:5173 (default Vite port)
+## Working with workspaces
 
-### 3. Run Individually
+- `pnpm --filter <name> <command>` scopes execution to a single package or app.
+- `pnpm run <command>` at the root executes that script in every workspace that defines it (`pnpm -r`).
+- `pnpm list --depth -1 --filter <name>` shows dependencies for a specific workspace.
+- Path aliases are centralised in `tsconfig.base.json`; individual packages extend it via their `tsconfig.json`.
+
+### Layout at a glance
+
+```
+apps/
+	api/   # NestJS GraphQL server
+	web/   # React 19 + Vite client
+packages/
+	ui/            # Shadcn-based component library
+	utils/         # Shared helpers
+	eslint-config/ # Flat config presets
+```
+
+## UI component workflow
+
+The UI package exposes a TypeScript automation script that handles shadcn installs and re-exports.
 
 ```bash
-pnpm dev:api
-pnpm dev:web
+pnpm --filter ui run components:add button
 ```
 
-### 4. Build Everything
+- Runs `scripts/components-add.ts` through `tsx`.
+- Installs the requested component from `shadcn` and regenerates `packages/ui/src/index.ts` exports.
+- To rebuild exports without adding a component (e.g. after deleting files):
 
 ```bash
-pnpm build
+pnpm --filter ui run components:add -- --refresh
 ```
 
-### 5. Lint All Packages
-
-```bash
-pnpm lint
-```
-
-## 🧩 Shared Packages
-
-### `packages/ui`
-
-Component library with Tailwind + Radix. To add a new component using shadcn tooling:
-
-```bash
-pnpm --filter ui run components:add
-```
-
-Export components via `packages/ui/src/index.ts` and consume from apps with:
+Consume UI components from any workspace via:
 
 ```ts
-import { Button } from '@packages/ui';
+import { Button } from '@boilerplate/ui';
 ```
 
-### `packages/utils`
+## Tips for day-to-day development
 
-Place pure, framework-agnostic helpers here and export through `src/index.ts`.
+- Keep package-specific scripts local (e.g. `apps/web/package.json`) and wire orchestration scripts at the root.
+- Use `pnpm install --filter <workspace>... <dep>` to add dependencies scoped to a package.
+- Prefer TypeScript entry points for scripts; `tsx` is already available to run them without manual builds.
+- Tailwind is configured for both the web app and UI package—reuse design tokens through shared CSS in `packages/ui/src/styles`.
 
-### `packages/eslint-config`
+## Next steps
 
-Centralized ESLint presets (base / node / react, etc.). Extend them in each project via flat config imports.
-
-## 🔗 Cross-Package Development Tips
-
-- Use `pnpm --filter <name> <command>` to scope actions
-- `pnpm why <dep>` to see dependency provenance
-- Leverage TypeScript path mapping via `tsconfig.base.json` if added later
-
-## 🧹 Linting & Formatting
-
-- ESLint config lives in `packages/eslint-config`
-- Each workspace has its own `eslint.config.ts` referencing shared rules
-- Run `pnpm lint` to check/fix
-- Prettier is configured; integrate with your editor for on-save formatting
-
-## 🛡 Environment Variables
-
-- API typical env would go in `.env` (not yet included). Add `@nestjs/config` if needed.
-- Web env variables: create `.env.local` with `VITE_*` prefixed vars to expose to client
-
-## 🐞 Troubleshooting
-
-| Issue                          | Fix                                                                                       |
-| ------------------------------ | ----------------------------------------------------------------------------------------- |
-| Dependency not found after add | Ensure you ran `pnpm install` at root, not inside subfolder                               |
-| Types not updating             | Restart TS server or run `pnpm install` to refresh symlinks                               |
-| Port conflicts                 | Change Vite port via `vite --port 5174` or Nest via env vars                              |
-| Build order problems           | Ensure dependent package has a `build` script and proper `exports` if using Node features |
-
-## 🚧 Future Improvements (Ideas)
-
-- Add CI (GitHub Actions): lint, test, build
-- Add Changesets for versioning/publishing
-- Add Dockerfiles for API & Web
-- Add Vitest + React Testing Library to web
-- Add Storybook for `ui`
-- Add path aliases and tsconfig project references (composite builds)
-- Setup commit linting + husky hooks
-
-## 🤝 Contribution Workflow
-
-1. Create a feature branch
-2. Implement changes & add/update tests
-3. Run: `pnpm lint && pnpm test && pnpm build`
-4. Open PR with summary + screenshots (if UI)
+Potential upgrades include GitHub Actions for CI, Changesets for publishing, Storybook for the UI library, and Vitest for richer test coverage. Contributions welcome!

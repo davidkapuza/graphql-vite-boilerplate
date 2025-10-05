@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compileOnSave": false,
+  "files": [], // intentionally empty
+  "references": [
+    { "path": "./apps/api" },
+    { "path": "./apps/web" },
+    { "path": "./packages/ui" },
+    { "path": "./packages/eslint-config" },
+    { "path": "./packages/utils" }
+  ]
+}

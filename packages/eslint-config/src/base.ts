@@ -1,19 +1,19 @@
-import eslint from "@eslint/js";
-import { defineConfig, globalIgnores } from "eslint/config";
-import tseslint from "typescript-eslint";
-import prettier from "eslint-config-prettier/flat";
-import path from "node:path";
+import js from '@eslint/js';
+import prettier from 'eslint-config-prettier/flat';
+import tseslint from 'typescript-eslint';
+import { defineConfig, globalIgnores } from 'eslint/config';
+import type { Linter } from 'eslint';
 
-export const baseConfig = defineConfig([
-  globalIgnores(["dist"]),
-  eslint.configs.recommended,
-  tseslint.configs.recommended,
+export const baseConfig: Linter.Config[] = defineConfig([
+  globalIgnores(['dist']),
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
   prettier,
   {
+    ignores: ['dist/**'],
     languageOptions: {
       parserOptions: {
-        projectService: true,
-        tsconfigRootDir: path.resolve(process.cwd()),
+        tsconfigRootDir: __dirname,
       },
     },
   },

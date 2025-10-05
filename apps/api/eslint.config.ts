@@ -1,1 +1,1 @@
-export { nodeConfig as default } from '../../packages/eslint-config/src';
+export { nodeConfig as default } from '@boilerplate/eslint-config';

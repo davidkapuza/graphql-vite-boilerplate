@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button } from '@packages/ui';
+import { Button } from '@boilerplate/ui';
 
 function App() {
   const [count, setCount] = useState(0);
